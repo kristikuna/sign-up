@@ -18,10 +18,10 @@ const SignUpSchema = new mongoose.Schema({
   food: {
     type: String,
   },
-  prepNeeds: {
+  notes: {
     type: String,
   },
-  notes: {
+  prepNeeds: {
     type: String,
   },
 })
