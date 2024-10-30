@@ -1,5 +1,5 @@
 import React from "react"
-import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
 
 function Header({ siteTitle }) {
   return (
@@ -11,7 +11,8 @@ function Header({ siteTitle }) {
         justifyContent: `space-between`,
       }}
     >
-      <Box
+      <Typography
+        variant="h1"
         sx={{
           color: "#fff4db",
           fontSize: "3rem",
@@ -20,7 +21,7 @@ function Header({ siteTitle }) {
         }}
       >
         {siteTitle}
-      </Box>
+      </Typography>
     </header>
   )
 }

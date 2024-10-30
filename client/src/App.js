@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client"
 
 import "./App.css"
+import Detail from "./pages/Detail/Detail"
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -31,7 +32,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/projects/:id" element={<Project />} /> */}
+          <Route path="/detail/:id" element={<Detail />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>

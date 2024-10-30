@@ -13,7 +13,7 @@ const signUpMutations = {
     type: SignUpType,
     args: {
       name: { type: GraphQLNonNull(GraphQLString) },
-      category: { type: SignUpCategoryEnum, defaultValue: "Side Dish" },
+      category: { type: SignUpCategoryEnum },
       food: { type: GraphQLNonNull(GraphQLString) },
       prepNeeds: { type: GraphQLString },
       notes: { type: GraphQLString },
