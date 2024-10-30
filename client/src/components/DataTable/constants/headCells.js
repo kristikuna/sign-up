@@ -19,4 +19,5 @@ export const COLUMN_HEADERS = [
   },
   { id: "category", numeric: true, disablePadding: false, label: "Category" },
   { id: "notes", numeric: true, disablePadding: false, label: "Notes" },
+  { id: "actions", numeric: false, disablePadding: false, label: "" },
 ]
