@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client"
-import React, { useState, useMemo } from "react"
-
+import { useState, useEffect } from "react"
 import { Button, Box, Typography } from "@mui/material"
 import DataTableRow from "./DataTableRow"
 import Table from "@mui/material/Table"
@@ -24,7 +23,15 @@ function getComparator(order, orderBy) {
 function DataTable() {
   const { data } = useQuery(GET_SIGN_UPS)
   const [order, setOrder] = useState("asc")
-  const [orderBy, setOrderBy] = useState("food")
+  const [orderBy, setOrderBy] = useState("name")
+  const [rows, setRows] = useState([])
+
+  useEffect(() => {
+    if (data && data.signUps) {
+      const sortedRows = [...data.signUps].sort(getComparator(order, orderBy))
+      setRows(sortedRows)
+    }
+  }, [data, order, orderBy])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc"
@@ -32,11 +39,24 @@ function DataTable() {
     setOrderBy(property)
   }
 
-  const visibleRows = useMemo(() => {
-    // Check if data and data.signUps exist
-    if (!data || !data.signUps) return [] // Return an empty array if not available
-    return [...data.signUps].sort(getComparator(order, orderBy))
-  }, [data, order, orderBy])
+  const handleAddRow = () => {
+    setRows((prevRows) => [
+      ...prevRows,
+      {
+        name: "",
+        food: "",
+        prepNeeds: "",
+        category: "",
+        notes: "",
+      },
+    ])
+  }
+
+  const handleChange = (index, field, value) => {
+    const updatedRows = [...rows]
+    updatedRows[index][field] = value
+    setRows(updatedRows)
+  }
 
   return (
     <Box sx={{ background: "#fff4db", width: "100%" }}>
@@ -50,16 +70,12 @@ function DataTable() {
         >
           <Typography
             variant="h2"
-            sx={{
-              fontSize: "2rem",
-              fontWeight: "bold",
-              // padding: "1rem",
-            }}
+            sx={{ fontSize: "2rem", fontWeight: "bold" }}
             color="#333"
           >
             Thanksgiving Sign-Up
           </Typography>
-          <Button color="warning" variant="contained">
+          <Button color="warning" variant="contained" onClick={handleAddRow}>
             Add Row
           </Button>
         </Box>
@@ -75,8 +91,14 @@ function DataTable() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {visibleRows.map((row, index) => (
-                <DataTableRow key={row.id} row={row} index={index} />
+              {rows.map((row, index) => (
+                <DataTableRow
+                  key={row.id}
+                  row={row}
+                  index={index}
+                  onChange={handleChange}
+                  isNewRow={index >= (data?.signUps?.length || 0)}
+                />
               ))}
             </TableBody>
           </Table>

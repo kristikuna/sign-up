@@ -5,7 +5,7 @@ import TableRow from "@mui/material/TableRow"
 import TableSortLabel from "@mui/material/TableSortLabel"
 import { visuallyHidden } from "@mui/utils"
 
-import { COLUMN_HEADERS } from "./constants/columnHeaders"
+import { COLUMN_HEADERS } from "./constants/headCells"
 
 function DataTableHead({ order, orderBy, onRequestSort }) {
   const createSortHandler = (property) => (event) => {
