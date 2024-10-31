@@ -6,14 +6,14 @@ import {
   TextField,
   MenuItem,
   InputLabel,
-  IconButton,
 } from "@mui/material"
 import { styled } from "@mui/system"
 
 import { useMutation } from "@apollo/client"
 import { UPDATE_SIGN_UP } from "mutations/updateSignUp"
+import { MENU_CATEGORIES } from "constants/categories"
 import DeleteButton from "./DeleteButton"
-import Toast from "./Toast"
+import SuccessModal from "../SuccessModal/SuccessModal"
 
 const FormBox = styled(Box)({
   display: "grid",
@@ -22,20 +22,10 @@ const FormBox = styled(Box)({
   padding: "1rem",
 })
 
-const categories = [
-  { value: "appetizer", label: "Appetizer" },
-  { value: "condiment", label: "Condiment" },
-  { value: "dessert", label: "Dessert" },
-  { value: "main", label: "Main Dish" },
-  { value: "salad", label: "Salad" },
-  { value: "side", label: "Side Dish" },
-]
-
 export default function Form({ signUp }) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState(signUp?.name)
   const [food, setFood] = useState(signUp?.food)
-  const [prepNeeds, setPrepNeeds] = useState(signUp?.prepNeeds || "")
   const [notes, setNotes] = useState(signUp?.notes || "")
   const [category, setCategory] = useState(() => {
     switch (signUp?.category) {
@@ -57,8 +47,7 @@ export default function Form({ signUp }) {
   })
 
   const [updateSignUp] = useMutation(UPDATE_SIGN_UP, {
-    variables: { id: signUp.id, name, food, category, notes, prepNeeds },
-    // refetchQueries: [{ query: GET_SIGN_UP, variables: { id } }],
+    variables: { id: signUp.id, name, food, category, notes },
   })
 
   const handleClick = () => {
@@ -68,22 +57,11 @@ export default function Form({ signUp }) {
   const handleClose = () => {
     setOpen(false)
   }
-  const action = (
-    <>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        X
-      </IconButton>
-    </>
-  )
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    updateSignUp(name, food, category, notes, prepNeeds)
+    updateSignUp(name, food, category, notes)
     handleClick()
   }
 
@@ -110,21 +88,12 @@ export default function Form({ signUp }) {
           color="warning"
           sx={{ gridColumn: 2, gridRow: 1 }}
         />
-        <TextField
-          label="Food Prep Needs"
-          value={prepNeeds}
-          id="prepNeeds"
-          onChange={(e) => setPrepNeeds(e.target.value)}
-          variant="standard"
-          color="warning"
-          sx={{ gridColumn: 1, gridRow: 2 }}
-        />
         <InputLabel
           id="Category"
           variant="standard"
           color="warning"
           sx={{
-            gridColumn: 2,
+            gridColumn: 1,
             gridRow: 2,
             transform: "translate(0, -1.5px) scale(0.75)",
           }}
@@ -141,12 +110,12 @@ export default function Form({ signUp }) {
           color="warning"
           onChange={(e) => setCategory(e.target.value)}
           sx={{
-            gridColumn: 2,
+            gridColumn: 1,
             gridRow: 2,
             padding: 0,
           }}
         >
-          {categories.map((cat) => (
+          {MENU_CATEGORIES.map((cat) => (
             <MenuItem key={cat.value} value={cat.value}>
               {cat.label}
             </MenuItem>
@@ -159,20 +128,20 @@ export default function Form({ signUp }) {
           onChange={(e) => setNotes(e.target.value)}
           variant="standard"
           color="warning"
-          sx={{ gridColumn: "1 / span 2", gridRow: 3 }}
+          sx={{ gridColumn: 2, gridRow: 2 }}
         />
         <DeleteButton signUpId={signUp.id} />
         <Button
           aria-label="update"
           color="warning"
-          sx={{ gridColumn: 1, gridRow: 4 }}
+          sx={{ gridColumn: 1, gridRow: 4, fontWeight: "bold" }}
           variant="contained"
           type="submit"
         >
           UPDATE
         </Button>
+        <SuccessModal open={open} handleClose={handleClose} showHome />
       </FormBox>
-      <Toast open={open} handleClose={handleClose} action={action} />
     </>
   )
 }

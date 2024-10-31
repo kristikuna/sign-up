@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client"
 import { Link, useParams } from "react-router-dom"
 import { Box, Typography, Paper } from "@mui/material"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import { styled } from "@mui/system"
 import Layout from "components/Layout/Layout"
 import Form from "components/EditSignUpForm/Form"
@@ -29,8 +30,16 @@ const DetailTemplate = () => {
             flexDirection: "row",
           }}
         >
-          <Typography component="h2">Edit Sign-Up</Typography>
-          <Link to="/">Back</Link>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: "2rem", fontWeight: "bold" }}
+            color="#333"
+          >
+            Edit Sign-Up
+          </Typography>
+          <Link to="/">
+            <ArrowBackIcon color="warning" />
+          </Link>
         </Box>
         <Form signUp={data?.signUp} />
       </DetailBox>

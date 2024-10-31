@@ -34,7 +34,7 @@ const ThanksgivingCountdown = () => {
         sx={{
           background: "#cc5500",
           borderRadius: "4px",
-          fontSize: "2.75rem",
+          fontSize: "1.9rem",
           fontWeight: "bold",
           padding: "1rem",
         }}
@@ -57,7 +57,7 @@ const ThanksgivingCountdown = () => {
               align="center"
               color="#333"
               sx={{
-                fontSize: "3rem",
+                fontSize: "2rem",
                 fontWeight: "bold",
               }}
             >
@@ -73,7 +73,7 @@ const ThanksgivingCountdown = () => {
               align="center"
               color="#333"
               sx={{
-                fontSize: "3rem",
+                fontSize: "2rem",
                 fontWeight: "bold",
               }}
             >
@@ -89,7 +89,7 @@ const ThanksgivingCountdown = () => {
               align="center"
               color="#333"
               sx={{
-                fontSize: "3rem",
+                fontSize: "2rem",
                 fontWeight: "bold",
               }}
             >
@@ -105,7 +105,7 @@ const ThanksgivingCountdown = () => {
               align="center"
               color="#333"
               sx={{
-                fontSize: "3rem",
+                fontSize: "2rem",
                 fontWeight: "bold",
               }}
             >

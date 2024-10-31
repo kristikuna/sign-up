@@ -1,12 +1,17 @@
 import { useQuery } from "@apollo/client"
 import { useState, useEffect } from "react"
-import { Button, Box, Typography } from "@mui/material"
+import {
+  Box,
+  IconButton,
+  Table,
+  TableBody,
+  TableContainer,
+  Typography,
+} from "@mui/material"
 import DataTableRow from "./DataTableRow"
-import Table from "@mui/material/Table"
-import TableBody from "@mui/material/TableBody"
-import TableContainer from "@mui/material/TableContainer"
 import { GET_SIGN_UPS } from "../../queries/signUpsQuery"
 import DataTableHead from "./DataTableHead"
+import AddIcon from "@mui/icons-material/Add"
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) return -1
@@ -58,6 +63,10 @@ function DataTable() {
     setRows(updatedRows)
   }
 
+  const handleDeleteRow = (index) => {
+    const newRows = rows.filter((_, rowIndex) => rowIndex !== index)
+    setRows(newRows)
+  }
   return (
     <Box sx={{ background: "#fff4db", width: "100%" }}>
       <Box sx={{ p: 1, mb: 2 }}>
@@ -73,15 +82,22 @@ function DataTable() {
             sx={{ fontSize: "2rem", fontWeight: "bold" }}
             color="#333"
           >
-            Thanksgiving Sign-Up
+            Sign-Up
           </Typography>
-          <Button color="warning" variant="contained" onClick={handleAddRow}>
-            Add Row
-          </Button>
+          <Box>
+            <IconButton
+              aria-label="Add Row"
+              color="warning"
+              variant="contained"
+              onClick={handleAddRow}
+            >
+              <AddIcon />
+            </IconButton>
+          </Box>
         </Box>
         <TableContainer sx={{ background: "#fff4db" }}>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 800 }}
             aria-labelledby="tableTitle"
             size="medium"
           >
@@ -93,11 +109,12 @@ function DataTable() {
             <TableBody>
               {rows.map((row, index) => (
                 <DataTableRow
-                  key={row.id}
+                  key={index}
                   row={row}
                   index={index}
                   onChange={handleChange}
                   isNewRow={index >= (data?.signUps?.length || 0)}
+                  handleDeleteRow={handleDeleteRow}
                 />
               ))}
             </TableBody>

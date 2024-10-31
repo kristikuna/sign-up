@@ -9,7 +9,7 @@ const MainContent = styled(Box)({
   justifyContent: "center",
   flexDirection: "column",
   // padding: "0 5rem 7rem 5rem",
-  padding: "1rem",
+  padding: "0rem 2rem 7rem",
 })
 
 function Layout({ children }) {

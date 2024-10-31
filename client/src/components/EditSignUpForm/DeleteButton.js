@@ -22,7 +22,7 @@ function DeleteButton({ signUpId }) {
         deleteSignUp()
       }}
       variant="contained"
-      sx={{ gridColumn: 2, gridRow: 4 }}
+      sx={{ gridColumn: 2, gridRow: 4, fontWeight: "bold" }}
     >
       DELETE
     </Button>

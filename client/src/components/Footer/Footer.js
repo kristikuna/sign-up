@@ -13,7 +13,6 @@ function Footer() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: `var(--font-sm)`,
         height: "7vh",
         position: "fixed",
         width: "100%",

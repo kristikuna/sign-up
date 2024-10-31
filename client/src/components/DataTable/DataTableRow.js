@@ -1,22 +1,75 @@
-import { IconButton, TableCell, TableRow, Typography } from "@mui/material"
+import { useState } from "react"
+import {
+  Box,
+  IconButton,
+  MenuItem,
+  Select,
+  TableCell,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import { Input } from "@mui/material"
-import DeleteIcon from "@mui/icons-material/Delete"
+import CancelIcon from "@mui/icons-material/Cancel"
 import CheckIcon from "@mui/icons-material/Check"
+import { MENU_CATEGORIES } from "constants/categories"
+import { useMutation } from "@apollo/client"
+import { ADD_SIGN_UP } from "mutations/addSignUp"
+import { GET_SIGN_UPS } from "queries/signUpsQuery"
+import SuccessModal from "components/SuccessModal/SuccessModal"
 
-function DataTableRow({ index, row, isNewRow, onChange }) {
+function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
+  const [selectDefaultValue, setSelectDefaultValue] = useState("side")
   const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
+
+  const [name, setName] = useState("")
+  const [food, setFood] = useState("")
+  const [notes, setNotes] = useState("")
+  const [category, setCategory] = useState("side")
+
+  const [addSignUp] = useMutation(ADD_SIGN_UP, {
+    variables: { name, food, notes, category },
+    update(cache, { data: { addSignUp } }) {
+      const { signUps } = cache.readQuery({ query: GET_SIGN_UPS })
+      cache.writeQuery({
+        query: GET_SIGN_UPS,
+        data: { signUps: [...signUps, addSignUp] },
+      })
+    },
+  })
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    if (name === "" || food === "") {
+      return alert("Please fill in all fields")
+    }
+
+    addSignUp(name, food, notes, category)
+    handleClick()
+  }
 
   const handleRowNavigate = (id) => {
+    console.log("triggered")
     navigate(`/detail/${id}`)
   }
-  console.log(isNewRow)
+
+  const handleChange = (event) => {
+    setSelectDefaultValue(event.target.value)
+    setCategory(event.target.value)
+  }
+
+  const handleClick = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   return (
     <TableRow
       hover
-      role="checkbox"
-      tabIndex={-1}
       sx={{
         cursor: "pointer",
         "&:hover": {
@@ -32,49 +85,62 @@ function DataTableRow({ index, row, isNewRow, onChange }) {
     >
       <TableCell component="th" scope="row" padding="none">
         {isNewRow ? (
-          <Input
+          <TextField
             color="warning"
-            onChange={(e) => onChange("name", e.target.value)}
+            required
+            variant="standard"
+            id="name"
+            label="Name"
+            onChange={(e) => setName(e.target.value)}
           />
         ) : (
           <Typography>{row.name}</Typography>
         )}
       </TableCell>
-      <TableCell align="right">
+      <TableCell>
         {isNewRow ? (
-          <Input
+          <TextField
             color="warning"
-            onChange={(e) => onChange("food", e.target.value)}
+            required
+            variant="standard"
+            id="food"
+            label="Food"
+            onChange={(e) => setFood(e.target.value)}
           />
         ) : (
           <Typography>{row.food}</Typography>
         )}
       </TableCell>
-      <TableCell align="right">
+      <TableCell>
         {isNewRow ? (
-          <Input
+          <Select
             color="warning"
-            onChange={(e) => onChange("prepNeeds", e.target.value)}
-          />
-        ) : (
-          <Typography>{row.prepNeeds}</Typography>
-        )}
-      </TableCell>
-      <TableCell align="right">
-        {isNewRow ? (
-          <Input
-            color="warning"
-            onChange={(e) => onChange("category", e.target.value)}
-          />
+            id="category"
+            label="Category"
+            labelId="Category"
+            variant="standard"
+            value={selectDefaultValue}
+            onChange={handleChange}
+            sx={{ width: "100%", top: "8px" }}
+          >
+            {MENU_CATEGORIES.map((cat) => (
+              <MenuItem key={cat.value} value={cat.value}>
+                {cat.label}
+              </MenuItem>
+            ))}
+          </Select>
         ) : (
           <Typography>{row.category}</Typography>
         )}
       </TableCell>
-      <TableCell align="right">
+      <TableCell>
         {isNewRow ? (
-          <Input
+          <TextField
             color="warning"
-            onChange={(e) => onChange("notes", e.target.value)}
+            variant="standard"
+            id="notes"
+            label="Notes"
+            onChange={(e) => setNotes(e.target.value)}
           />
         ) : (
           <Typography>{row.notes}</Typography>
@@ -82,28 +148,31 @@ function DataTableRow({ index, row, isNewRow, onChange }) {
       </TableCell>
       <TableCell align="right">
         {isNewRow ? (
-          <>
+          <Box sx={{ display: "flex" }}>
             <IconButton
               aria-label="delete"
-              // onClick={(e) => {
-              //   e.stopPropagation()
-              //   handleDeleteRow(index)
-              // }}
+              color="success"
+              onClick={(e) => {
+                e.stopPropagation()
+                onSubmit(e)
+              }}
             >
               <CheckIcon />
             </IconButton>
             <IconButton
               aria-label="delete"
-              // onClick={(e) => {
-              //   e.stopPropagation()
-              //   handleDeleteRow(index)
-              // }}
+              color="error"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleDeleteRow(index)
+              }}
             >
-              <DeleteIcon />
+              <CancelIcon />
             </IconButton>
-          </>
+          </Box>
         ) : null}
       </TableCell>
+      <SuccessModal open={open} handleClose={handleClose} showHome={false} />
     </TableRow>
   )
 }

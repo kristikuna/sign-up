@@ -5,7 +5,7 @@ import TableRow from "@mui/material/TableRow"
 import TableSortLabel from "@mui/material/TableSortLabel"
 import { visuallyHidden } from "@mui/utils"
 
-import { COLUMN_HEADERS } from "./constants/headCells"
+import { COLUMN_HEADERS } from "constants/headCells"
 
 function DataTableHead({ order, orderBy, onRequestSort }) {
   const createSortHandler = (property) => (event) => {
@@ -18,9 +18,14 @@ function DataTableHead({ order, orderBy, onRequestSort }) {
         {COLUMN_HEADERS.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="left"
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={{
+              fontSize: "1.1rem",
+              fontWeight: "bold",
+              width: { xs: "200px", md: "unset" },
+            }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
