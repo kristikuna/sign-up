@@ -43,7 +43,6 @@ const ThanksgivingCountdown = () => {
           fontSize: "1.9rem",
           fontWeight: "bold",
           padding: "1rem",
-          minWidth: "400px",
         }}
       >
         FEAST STARTING IN:
@@ -149,7 +148,7 @@ const ThanksgivingCountdown = () => {
             align="center"
             color="#333"
             sx={{
-              fontSize: "2rem",
+              fontSize: "1.7rem",
               fontWeight: "bold",
               alignSelf: "center",
             }}

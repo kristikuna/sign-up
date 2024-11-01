@@ -22,12 +22,13 @@ const DetailTemplate = () => {
 
   return (
     <Layout>
-      <DetailBox elevation={0} sx={{ padding: "1rem", width: "100%" }}>
+      <DetailBox elevation={0} sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             flexDirection: "row",
+            padding: ".5rem",
           }}
         >
           <Typography

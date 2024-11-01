@@ -8,7 +8,7 @@ const MainContent = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "column",
-  padding: "0rem 2rem 7rem",
+  padding: "0rem 1rem 7rem",
 
   [theme.breakpoints.up("md")]: {
     padding: "0 7rem 7rem",
