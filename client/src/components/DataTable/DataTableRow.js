@@ -17,6 +17,7 @@ import { useMutation } from "@apollo/client"
 import { ADD_SIGN_UP } from "mutations/addSignUp"
 import { GET_SIGN_UPS } from "queries/signUpsQuery"
 import SuccessModal from "components/SuccessModal/SuccessModal"
+import CategoryText from "./CategoryText"
 
 function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
   const [selectDefaultValue, setSelectDefaultValue] = useState("side")
@@ -50,7 +51,6 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
   }
 
   const handleRowNavigate = (id) => {
-    console.log("triggered")
     navigate(`/detail/${id}`)
   }
 
@@ -130,7 +130,7 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
             ))}
           </Select>
         ) : (
-          <Typography>{row.category}</Typography>
+          <CategoryText category={row.category} />
         )}
       </TableCell>
       <TableCell>

@@ -68,7 +68,7 @@ function DataTable() {
     setRows(newRows)
   }
   return (
-    <Box sx={{ background: "#fff4db", width: "100%" }}>
+    <Box sx={{ background: "#fff4db", borderRadius: "4px", width: "100%" }}>
       <Box sx={{ p: 1, mb: 2 }}>
         <Box
           sx={{

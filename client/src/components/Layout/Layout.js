@@ -3,14 +3,17 @@ import Footer from "components/Footer/Footer"
 import { Box } from "@mui/material"
 import { styled } from "@mui/system"
 
-const MainContent = styled(Box)({
+const MainContent = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "column",
-  // padding: "0 5rem 7rem 5rem",
   padding: "0rem 2rem 7rem",
-})
+
+  [theme.breakpoints.up("md")]: {
+    padding: "0 7rem 7rem",
+  },
+}))
 
 function Layout({ children }) {
   return (

@@ -1,29 +1,35 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { Typography, Box } from "@mui/material"
 
 const ThanksgivingCountdown = () => {
-  const thanksgivingDate = new Date("2024-11-28T00:00:00") // Thanksgiving 2024
+  const thanksgivingDate = useMemo(() => new Date("2024-11-28T00:00:00"), [])
   const [timeRemaining, setTimeRemaining] = useState({})
 
-  useEffect(() => {
-    const calculateTimeRemaining = () => {
-      const now = new Date()
-      const distance = thanksgivingDate - now
+  const calculateTimeRemaining = useCallback(() => {
+    const now = new Date()
+    const distance = thanksgivingDate - now
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      )
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+    const hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    )
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
-      setTimeRemaining({ days, hours, minutes, seconds })
-    }
-
-    const timer = setInterval(calculateTimeRemaining, 1000)
-
-    return () => clearInterval(timer) // Cleanup on component unmount
+    // Only update state if the time has changed
+    setTimeRemaining((prevTime) => {
+      const newTime = { days, hours, minutes, seconds }
+      if (JSON.stringify(prevTime) !== JSON.stringify(newTime)) {
+        return newTime
+      }
+      return prevTime
+    })
   }, [thanksgivingDate])
+
+  useEffect(() => {
+    const timer = setInterval(calculateTimeRemaining, 1000)
+    return () => clearInterval(timer)
+  }, [calculateTimeRemaining]) // Added calculateTimeRemaining to dependencies
 
   return (
     <Box>
@@ -37,98 +43,121 @@ const ThanksgivingCountdown = () => {
           fontSize: "1.9rem",
           fontWeight: "bold",
           padding: "1rem",
+          minWidth: "400px",
         }}
       >
         FEAST STARTING IN:
       </Typography>
-      {timeRemaining.days ? (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 2,
-            textAlign: "center",
-          }}
-        >
-          <Box paddingRight={3}>
-            <Typography
-              component="p"
-              align="center"
-              color="#333"
-              sx={{
-                fontSize: "2rem",
-                fontWeight: "bold",
-              }}
-            >
-              {timeRemaining.days}
-            </Typography>
-            <Typography component="p" align="center" color="#333">
-              Days
-            </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "7rem",
+        }}
+      >
+        {timeRemaining.days ? (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 2,
+              textAlign: "center",
+            }}
+          >
+            <Box paddingRight={3}>
+              <Typography
+                component="p"
+                align="center"
+                color="#333"
+                sx={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                }}
+              >
+                {timeRemaining.days}
+              </Typography>
+              <Typography component="p" align="center" color="#333">
+                Days
+              </Typography>
+            </Box>
+            <Box paddingRight={3}>
+              <Typography
+                component="p"
+                align="center"
+                color="#333"
+                sx={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                }}
+              >
+                {timeRemaining.hours}
+              </Typography>
+              <Typography
+                component="p"
+                align="center"
+                color="var(--color-text)"
+              >
+                Hours
+              </Typography>
+            </Box>
+            <Box paddingRight={3}>
+              <Typography
+                component="p"
+                align="center"
+                color="#333"
+                sx={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                }}
+              >
+                {timeRemaining.minutes}
+              </Typography>
+              <Typography
+                component="p"
+                align="center"
+                color="var(--color-text)"
+              >
+                Minutes
+              </Typography>
+            </Box>
+            <Box>
+              <Typography
+                component="p"
+                align="center"
+                color="#333"
+                sx={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                }}
+              >
+                {timeRemaining.seconds}
+              </Typography>
+              <Typography
+                component="p"
+                align="center"
+                color="var(--color-text)"
+              >
+                Seconds
+              </Typography>
+            </Box>
           </Box>
-          <Box paddingRight={3}>
-            <Typography
-              component="p"
-              align="center"
-              color="#333"
-              sx={{
-                fontSize: "2rem",
-                fontWeight: "bold",
-              }}
-            >
-              {timeRemaining.hours}
-            </Typography>
-            <Typography component="p" align="center" color="var(--color-text)">
-              Hours
-            </Typography>
-          </Box>
-          <Box paddingRight={3}>
-            <Typography
-              component="p"
-              align="center"
-              color="#333"
-              sx={{
-                fontSize: "2rem",
-                fontWeight: "bold",
-              }}
-            >
-              {timeRemaining.minutes}
-            </Typography>
-            <Typography component="p" align="center" color="var(--color-text)">
-              Minutes
-            </Typography>
-          </Box>
-          <Box>
-            <Typography
-              component="p"
-              align="center"
-              color="#333"
-              sx={{
-                fontSize: "2rem",
-                fontWeight: "bold",
-              }}
-            >
-              {timeRemaining.seconds}
-            </Typography>
-            <Typography component="p" align="center" color="var(--color-text)">
-              Seconds
-            </Typography>
-          </Box>
-        </Box>
-      ) : (
-        <Typography
-          component="p"
-          align="center"
-          color="#333"
-          sx={{
-            fontSize: "2rem",
-            fontWeight: "bold",
-          }}
-        >
-          "Calculating feast time..."
-        </Typography>
-      )}
+        ) : (
+          <Typography
+            component="p"
+            align="center"
+            color="#333"
+            sx={{
+              fontSize: "2rem",
+              fontWeight: "bold",
+              alignSelf: "center",
+            }}
+          >
+            "Calculating feast time..."
+          </Typography>
+        )}
+      </Box>
     </Box>
   )
 }
