@@ -83,7 +83,7 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
         }
       }}
     >
-      <TableCell component="th" scope="row" padding="none">
+      <TableCell>
         {isNewRow ? (
           <TextField
             color="warning"
@@ -92,6 +92,7 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
             id="name"
             label="Name"
             onChange={(e) => setName(e.target.value)}
+            sx={{ width: "100%" }}
           />
         ) : (
           <Typography>{row.name}</Typography>
@@ -106,6 +107,7 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
             id="food"
             label="Food"
             onChange={(e) => setFood(e.target.value)}
+            sx={{ width: "100%" }}
           />
         ) : (
           <Typography>{row.food}</Typography>
@@ -141,6 +143,7 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
             id="notes"
             label="Notes"
             onChange={(e) => setNotes(e.target.value)}
+            sx={{ width: "100%" }}
           />
         ) : (
           <Typography>{row.notes}</Typography>
