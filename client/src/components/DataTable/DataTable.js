@@ -28,7 +28,7 @@ function getComparator(order, orderBy) {
 function DataTable() {
   const { data, loading } = useQuery(GET_SIGN_UPS)
   const [order, setOrder] = useState("asc")
-  const [orderBy, setOrderBy] = useState("name")
+  const [orderBy, setOrderBy] = useState("category")
   const [rows, setRows] = useState([])
 
   useEffect(() => {
