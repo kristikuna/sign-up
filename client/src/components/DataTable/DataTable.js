@@ -119,23 +119,25 @@ function DataTable() {
             </Table>
           )}
         </TableContainer>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: { xs: "center", md: "flex-end" },
-            marginTop: 2,
-          }}
-        >
-          <Button
-            aria-label="Add Row"
-            color="warning"
-            variant="contained"
-            onClick={handleAddRow}
-            sx={{ width: { xs: "100%", md: "unset" } }}
+        {!loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "center", md: "flex-end" },
+              marginTop: 2,
+            }}
           >
-            Add Row
-          </Button>
-        </Box>
+            <Button
+              aria-label="Add Row"
+              color="warning"
+              variant="contained"
+              onClick={handleAddRow}
+              sx={{ width: { xs: "100%", md: "unset" } }}
+            >
+              Add Row
+            </Button>
+          </Box>
+        ) : null}
       </Box>
     </Box>
   )
