@@ -83,7 +83,7 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
         }
       }}
     >
-      <TableCell>
+      <TableCell sx={{ paddingLeft: 0 }}>
         {isNewRow ? (
           <TextField
             color="warning"
