@@ -1,7 +1,7 @@
 import { useState } from "react"
 import {
+  Button,
   Box,
-  IconButton,
   MenuItem,
   Select,
   TableCell,
@@ -10,8 +10,6 @@ import {
   Typography,
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import CancelIcon from "@mui/icons-material/Cancel"
-import CheckIcon from "@mui/icons-material/Check"
 import { MENU_CATEGORIES } from "constants/categories"
 import { useMutation } from "@apollo/client"
 import { ADD_SIGN_UP } from "mutations/addSignUp"
@@ -151,27 +149,29 @@ function DataTableRow({ index, row, isNewRow, onChange, handleDeleteRow }) {
       </TableCell>
       <TableCell align="right">
         {isNewRow ? (
-          <Box sx={{ display: "flex" }}>
-            <IconButton
-              aria-label="delete"
+          <Box sx={{ display: "flex", gap: ".5rem" }}>
+            <Button
+              aria-label="save"
               color="success"
+              variant="contained"
               onClick={(e) => {
                 e.stopPropagation()
                 onSubmit(e)
               }}
             >
-              <CheckIcon />
-            </IconButton>
-            <IconButton
+              Save
+            </Button>
+            <Button
               aria-label="delete"
               color="error"
+              variant="outlined"
               onClick={(e) => {
                 e.stopPropagation()
                 handleDeleteRow(index)
               }}
             >
-              <CancelIcon />
-            </IconButton>
+              Delete
+            </Button>
           </Box>
         ) : null}
       </TableCell>
