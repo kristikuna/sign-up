@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client"
 import { useState, useEffect } from "react"
 import {
   Box,
-  IconButton,
+  Button,
   Table,
   TableBody,
   TableContainer,
@@ -11,7 +11,6 @@ import {
 import DataTableRow from "./DataTableRow"
 import { GET_SIGN_UPS } from "../../queries/signUpsQuery"
 import DataTableHead from "./DataTableHead"
-import AddIcon from "@mui/icons-material/Add"
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) return -1
@@ -84,16 +83,6 @@ function DataTable() {
           >
             Sign-Up
           </Typography>
-          <Box>
-            <IconButton
-              aria-label="Add Row"
-              color="warning"
-              variant="contained"
-              onClick={handleAddRow}
-            >
-              <AddIcon />
-            </IconButton>
-          </Box>
         </Box>
         <TableContainer sx={{ background: "#fff4db" }}>
           <Table
@@ -120,6 +109,23 @@ function DataTable() {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", md: "flex-end" },
+            marginTop: 2,
+          }}
+        >
+          <Button
+            aria-label="Add Row"
+            color="warning"
+            variant="contained"
+            onClick={handleAddRow}
+            sx={{ width: { xs: "100%", md: "unset" } }}
+          >
+            Add Row
+          </Button>
+        </Box>
       </Box>
     </Box>
   )
