@@ -7,6 +7,7 @@ import {
   TableBody,
   TableContainer,
   Typography,
+  Skeleton,
 } from "@mui/material"
 import DataTableRow from "./DataTableRow"
 import { GET_SIGN_UPS } from "../../queries/signUpsQuery"
@@ -25,7 +26,7 @@ function getComparator(order, orderBy) {
 }
 
 function DataTable() {
-  const { data } = useQuery(GET_SIGN_UPS)
+  const { data, loading } = useQuery(GET_SIGN_UPS)
   const [order, setOrder] = useState("asc")
   const [orderBy, setOrderBy] = useState("name")
   const [rows, setRows] = useState([])
@@ -66,6 +67,7 @@ function DataTable() {
     const newRows = rows.filter((_, rowIndex) => rowIndex !== index)
     setRows(newRows)
   }
+
   return (
     <Box sx={{ background: "#fff4db", borderRadius: "4px", width: "100%" }}>
       <Box sx={{ p: 1, mb: 2 }}>
@@ -85,29 +87,37 @@ function DataTable() {
           </Typography>
         </Box>
         <TableContainer sx={{ background: "#fff4db" }}>
-          <Table
-            sx={{ minWidth: 800 }}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
-            <DataTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {rows.map((row, index) => (
-                <DataTableRow
-                  key={index}
-                  row={row}
-                  index={index}
-                  onChange={handleChange}
-                  isNewRow={index >= (data?.signUps?.length || 0)}
-                  handleDeleteRow={handleDeleteRow}
-                />
-              ))}
-            </TableBody>
-          </Table>
+          {loading ? (
+            <>
+              <Skeleton animation="wave" width="100%" height={40} />
+              <Skeleton animation="wave" width="100%" height={40} />
+              <Skeleton animation="wave" width="100%" height={40} />
+            </>
+          ) : (
+            <Table
+              sx={{ minWidth: 800 }}
+              aria-labelledby="tableTitle"
+              size="medium"
+            >
+              <DataTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
+              <TableBody>
+                {rows.map((row, index) => (
+                  <DataTableRow
+                    key={index}
+                    row={row}
+                    index={index}
+                    onChange={handleChange}
+                    isNewRow={index >= (data?.signUps?.length || 0)}
+                    handleDeleteRow={handleDeleteRow}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </TableContainer>
         <Box
           sx={{
